@@ -6,6 +6,8 @@ package it.polito.tdp.yelp;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.yelp.model.Business;
 import it.polito.tdp.yelp.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,10 +39,10 @@ public class FXMLController {
     private TextField txtX2; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbCitta"
-    private ComboBox<?> cmbCitta; // Value injected by FXMLLoader
+    private ComboBox<String> cmbCitta; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbB1"
-    private ComboBox<?> cmbB1; // Value injected by FXMLLoader
+    private ComboBox<Business> cmbB1; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbB2"
     private ComboBox<?> cmbB2; // Value injected by FXMLLoader
@@ -51,13 +53,27 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	
+    	if(this.cmbCitta.getValue() != null)
+    	{
+    		this.txtResult.appendText(model.creaGrafo(this.cmbCitta.getValue()));
+    	}
+    	
+    	this.cmbB1.getItems().addAll(model.getVertici());
+    	this.btnDistante.setDisable(false);
+    	
     }
 
     @FXML
     void doCalcolaLocaleDistante(ActionEvent event) {
-
+    	txtResult.clear();
     	
+    	if(cmbB1.getValue()!=null)
+    	{
+    		this.txtResult.appendText(model.getAdiacentePiuDistante(cmbB1.getValue()));
+    	}
     }
+    	
+    	
 
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
@@ -80,5 +96,7 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	this.cmbCitta.getItems().addAll(model.getCities());
+    	this.btnDistante.setDisable(true);
     }
 }
